@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  wishlist-api:
+    container_name: wishlist-api
+    image: wishlist-api:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_HOST=wishlist-mongodb
+    networks:
+      - wishlist-network
+  mongodb:
+    container_name: wishlist-mongodb
+    image: mongo:6-jammy
+    volumes:
+      - dbdata6:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - wishlist-network
+
+volumes:
+  dbdata6:
+
+networks:
+  wishlist-network:
+    driver: bridge
